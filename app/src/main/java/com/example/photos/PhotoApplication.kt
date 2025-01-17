@@ -1,10 +1,10 @@
-package com.example.photoapp
+package com.example.photos
 
 import android.app.Application
-import com.example.photoapp.data.AppContainer
-import com.example.photoapp.data.DefaultAppContainer
+import com.example.photos.data.AppContainer
+import com.example.photos.data.DefaultAppContainer
 
-class PhotoApp : Application() {
+class PhotoApplication : Application() {
     lateinit var container: AppContainer
     override fun onCreate() {
         super.onCreate()

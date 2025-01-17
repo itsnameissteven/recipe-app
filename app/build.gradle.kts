@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.photoapp"
+    namespace = "com.example.photos"
     compileSdk = 35
 
     defaultConfig {
