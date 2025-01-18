@@ -11,11 +11,12 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.photos.PhotoApplication
 import com.example.photos.data.PhotoRepository
+import com.example.photos.model.Photo
 import kotlinx.coroutines.launch
 
 sealed interface PhotoUiState {
 //   todo add different states
-    data class Success(val photos: String) : PhotoUiState
+    data class Success(val photos: List<Photo>) : PhotoUiState
     object Error : PhotoUiState
     object Loading : PhotoUiState
 }
