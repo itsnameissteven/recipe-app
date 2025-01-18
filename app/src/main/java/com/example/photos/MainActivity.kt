@@ -1,4 +1,4 @@
-package com.example.photoapp
+package com.example.photos
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -7,7 +7,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.example.photoapp.ui.theme.PhotoAppTheme
+import com.example.photos.ui.PhotoApp
+import com.example.photos.ui.theme.PhotoAppTheme
 
 
 class MainActivity : ComponentActivity() {
