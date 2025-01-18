@@ -5,6 +5,6 @@ import retrofit2.http.GET
 
 interface PhotoApiService {
 
-    @GET("photos")
+    @GET("list?page=3&limit=50")
     suspend fun getPhotos(): List<Photo>
 }

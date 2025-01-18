@@ -1,5 +1,6 @@
 package com.example.photos.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,6 +37,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
+    Log.i("test", "home screen")
     when(photoUiState) {
         is PhotoUiState.Loading -> LoadingScreen(modifier = modifier)
         is PhotoUiState.Success -> PhotosGridScreen(photoUiState.photos, contentPadding = contentPadding, modifier = modifier.fillMaxWidth())
@@ -53,6 +55,7 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
 }
 @Composable
 fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
+    Log.i("test", "error screen")
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
