@@ -10,6 +10,6 @@ interface PhotoRepository {
 class NetworkPhotoRepository(
     private val photoApiService: PhotoApiService
 ) : PhotoRepository {
-    /** Fetches list of MarsPhoto from marsApi*/
+
     override suspend fun getPhotos(): List<Photo> = photoApiService.getPhotos()
 }
