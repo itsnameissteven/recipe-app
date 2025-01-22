@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
                             selectedRecipe.value = recipe
                         })
                     } else {
-                        RecipeDetail(selectedRecipe.value!!)
+                        RecipeDetail(selectedRecipe.value!!, onBackClick = { selectedRecipe.value = null })
                     }
                 }
             }

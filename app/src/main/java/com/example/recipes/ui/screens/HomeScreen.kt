@@ -29,6 +29,8 @@ import com.example.recipes.model.RecipesResponse
 import com.example.recipes.ui.RecipeApp
 import com.example.recipes.ui.theme.RecipeAppTheme
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.content.MediaType.Companion.Text
+import androidx.compose.material3.Text
 import com.example.recipes.MainActivity
 
 @Composable
@@ -80,14 +82,7 @@ fun RecipeCard(recipe: Recipe, modifier: Modifier = Modifier, onCardClick: (Reci
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
-        AsyncImage(
-            model = ImageRequest.Builder(context = LocalContext.current).data(recipe.image)
-                .crossfade(true).build(),
-            error = painterResource(R.drawable.ic_broken_image),
-            placeholder = painterResource(R.drawable.loading_img),
-            contentDescription = stringResource(R.string.app_name),
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxWidth()
-        )
+        RecipeImage(recipe, modifier = Modifier.fillMaxWidth())
+        Text(recipe.title)
     }
 }
