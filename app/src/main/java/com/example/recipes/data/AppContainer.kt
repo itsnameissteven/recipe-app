@@ -11,10 +11,11 @@ interface AppContainer {
 }
 
 class DefaultAppContainer: AppContainer {
-    private val baseUrl = "https://api.spoonacular.com/"
+    private val baseUrl = "https://api.spoonacular.com/recipes/"
 
+    private val retroJson = Json { ignoreUnknownKeys = true }
     private val retrofit: Retrofit = Retrofit.Builder()
-        .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+        .addConverterFactory(retroJson.asConverterFactory("application/json".toMediaType()))
         .baseUrl(baseUrl)
         .build()
 

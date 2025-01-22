@@ -1,15 +1,15 @@
 package com.example.recipes.data
 
-import com.example.recipes.model.Recipe
+import com.example.recipes.model.RecipesResponse
 import com.example.recipes.network.RecipeApiService
 
 interface RecipeRepository {
-    suspend fun getRecipes(): List<Recipe>
+    suspend fun getRecipes(): RecipesResponse
 }
 
 class NetworkRecipeRepository(
     private val recipeApiService: RecipeApiService
 ) : RecipeRepository {
 
-    override suspend fun getRecipes(): List<Recipe> = recipeApiService.getRecipes()
+    override suspend fun getRecipes(): RecipesResponse = recipeApiService.getRecipes()
 }

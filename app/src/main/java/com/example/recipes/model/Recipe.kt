@@ -5,11 +5,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Recipe (
-    val id: String,
-    val author: String,
-    val width: Int,
-    val height: Int,
-    val url: String,
-    @SerialName(value = "download_url")
-    val imgSrc: String
+    val id: Int,
+    val title: String,
+    val image: String
+)
+
+@Serializable
+data class RecipesResponse (
+    val recipes: List<Recipe>
 )
