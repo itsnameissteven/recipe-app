@@ -14,13 +14,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import com.example.recipes.ui.screens.HomeScreen
+import com.example.recipes.ui.screens.RecipeDetailScreen
 import com.example.recipes.ui.screens.RecipeViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.layout.fillMaxSize
+import com.example.recipes.model.Recipe
+import com.example.recipes.ui.screens.RecipeDetailViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RecipeApp() {
+fun RecipeApp(onCardClick: (Recipe) -> Unit) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -34,6 +37,29 @@ fun RecipeApp() {
             HomeScreen(
                 recipeUiState = recipesViewModel.recipesUiState,
                 retryAction = recipesViewModel::getAppRecipes,
+                contentPadding = it,
+                onCardClick = onCardClick
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RecipeDetail(recipe: Recipe) {
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = { RecipeAppTopBar(scrollBehavior = scrollBehavior) }
+    ) {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            val recipeDetailsViewModel: RecipeDetailViewModel  =
+                viewModel(factory = RecipeDetailViewModel.Factory)
+            RecipeDetailScreen(
+                recipeDetailUiState = recipeDetailsViewModel.recipeDetailsUiState,
+                retryAction = recipeDetailsViewModel::getRecipe,
                 contentPadding = it
             )
         }
