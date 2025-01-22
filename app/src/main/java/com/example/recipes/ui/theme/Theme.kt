@@ -1,4 +1,4 @@
-package com.example.photos.ui.theme
+package com.example.recipes.ui.theme
 
 import android.app.Activity
 import android.os.Build
@@ -28,7 +28,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun PhotoAppTheme(
+fun RecipeAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit

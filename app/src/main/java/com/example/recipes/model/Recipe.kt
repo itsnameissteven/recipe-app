@@ -1,10 +1,10 @@
-package com.example.photos.model
+package com.example.recipes.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Photo (
+data class Recipe (
     val id: String,
     val author: String,
     val width: Int,

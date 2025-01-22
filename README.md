@@ -1,1 +1,1 @@
-# kotlin-photo-app
+# kotlin-recipe-app

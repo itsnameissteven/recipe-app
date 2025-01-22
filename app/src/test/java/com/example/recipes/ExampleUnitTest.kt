@@ -1,4 +1,4 @@
-package com.example.photos
+package com.example.recipes
 
 import org.junit.Test
 
