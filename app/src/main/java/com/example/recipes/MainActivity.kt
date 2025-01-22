@@ -1,4 +1,4 @@
-package com.example.photos
+package com.example.recipes
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -7,8 +7,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.example.photos.ui.PhotoApp
-import com.example.photos.ui.theme.PhotoAppTheme
+import com.example.recipes.ui.RecipeApp
+import com.example.recipes.ui.theme.RecipeAppTheme
 
 
 class MainActivity : ComponentActivity() {
@@ -16,11 +16,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
-            PhotoAppTheme {
+            RecipeAppTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                 ) {
-                    PhotoApp()
+                    RecipeApp()
                 }
             }
         }

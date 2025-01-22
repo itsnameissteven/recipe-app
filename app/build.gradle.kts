@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.photos"
+    namespace = "com.example.recipes"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.photoapp"
+        applicationId = "com.example.recipes"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

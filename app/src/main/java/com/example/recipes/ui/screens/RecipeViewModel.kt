@@ -1,4 +1,4 @@
-package com.example.photos.ui.screens
+package com.example.recipes.ui.screens
 
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -10,45 +10,45 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.photos.PhotoApplication
-import com.example.photos.data.PhotoRepository
-import com.example.photos.model.Photo
+import com.example.recipes.RecipeApplication
+import com.example.recipes.data.RecipeRepository
+import com.example.recipes.model.Recipe
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
-sealed interface PhotoUiState {
+sealed interface RecipeUiState {
 //   todo add different states
-    data class Success(val photos: List<Photo>) : PhotoUiState
-    object Error : PhotoUiState
-    object Loading : PhotoUiState
+    data class Success(val recipes: List<Recipe>) : RecipeUiState
+    object Error : RecipeUiState
+    object Loading : RecipeUiState
 }
 
-class PhotoViewModel(private val photoRepository: PhotoRepository) : ViewModel() {
-    var photosUiState: PhotoUiState by mutableStateOf(PhotoUiState.Loading)
+class RecipeViewModel(private val recipeRepository: RecipeRepository) : ViewModel() {
+    var recipesUiState: RecipeUiState by mutableStateOf(RecipeUiState.Loading)
         private set
 
     init {
-       getAppPhotos()
+       getAppRecipes()
    }
 
-    fun getAppPhotos() {
-        Log.i("init", "getting photos")
+    fun getAppRecipes() {
+        Log.i("init", "getting recipes")
         viewModelScope.launch {
-            photosUiState = PhotoUiState.Loading
-            photosUiState = try {
+            recipesUiState = RecipeUiState.Loading
+            recipesUiState = try {
                 Log.i("test", "success")
-                PhotoUiState.Success(photoRepository.getPhotos())
+                RecipeUiState.Success(recipeRepository.getRecipes())
             } catch (e: IOException) {
                 Log.i("test", e.message ?: "one message")
                 println(e)
-                PhotoUiState.Error
+                RecipeUiState.Error
             } catch (e: HttpException) {
                 Log.i("test2", e.message ?: "two message")
-                PhotoUiState.Error
+                RecipeUiState.Error
             } catch (e: Exception) {
                 Log.i("test3", e.message ?: "3 message")
-                PhotoUiState.Error
+                RecipeUiState.Error
             }
         }
     }
@@ -56,10 +56,10 @@ class PhotoViewModel(private val photoRepository: PhotoRepository) : ViewModel()
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val application = (this[APPLICATION_KEY] as PhotoApplication)
-                val photoRepository = application.container.photoRepository
-                PhotoViewModel(photoRepository = photoRepository)
+                val application = (this[APPLICATION_KEY] as RecipeApplication)
+                val recipeRepository = application.container.recipeRepository
+                RecipeViewModel(recipeRepository = recipeRepository)
             }
-            }
+        }
     }
 }

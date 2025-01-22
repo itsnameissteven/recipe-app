@@ -1,4 +1,4 @@
-package com.example.photos.ui.screens
+package com.example.recipes.ui.screens
 
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -21,8 +21,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.photos.model.Photo
-import com.example.photos.R
+import com.example.recipes.model.Recipe
+import com.example.recipes.R
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
@@ -32,16 +32,16 @@ import androidx.compose.ui.Alignment
 
 @Composable
 fun HomeScreen(
-    photoUiState: PhotoUiState,
+    recipeUiState: RecipeUiState,
     retryAction: () -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
     Log.i("test", "home screen")
-    when(photoUiState) {
-        is PhotoUiState.Loading -> LoadingScreen(modifier = modifier)
-        is PhotoUiState.Success -> PhotosGridScreen(photoUiState.photos, contentPadding = contentPadding, modifier = modifier.fillMaxWidth())
-        is PhotoUiState.Error -> ErrorScreen(retryAction, modifier = modifier.fillMaxWidth())
+    when(recipeUiState) {
+        is RecipeUiState.Loading -> LoadingScreen(modifier = modifier)
+        is RecipeUiState.Success -> RecipesGridScreen(recipeUiState.recipes, contentPadding = contentPadding, modifier = modifier.fillMaxWidth())
+        is RecipeUiState.Error -> ErrorScreen(retryAction, modifier = modifier.fillMaxWidth())
     }
 }
 
@@ -71,8 +71,8 @@ fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
     }
 }
 @Composable
-fun PhotosGridScreen(
-    photos: List<Photo>,
+fun RecipesGridScreen(
+    recipes: List<Recipe>,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
@@ -81,9 +81,9 @@ fun PhotosGridScreen(
         modifier = modifier.padding(horizontal = 4.dp),
         contentPadding = contentPadding
     ) {
-        items(items = photos, key = { photo -> photo.id }) { photo ->
-            PhotoCard(
-                photo,
+        items(items = recipes, key = { recipe -> recipe.id }) { recipe ->
+            RecipeCard(
+                recipe,
                 modifier = Modifier
                     .padding(4.dp)
                     .fillMaxWidth()
@@ -93,14 +93,14 @@ fun PhotosGridScreen(
     }
 }
 @Composable
-fun PhotoCard(photo: Photo, modifier: Modifier = Modifier) {
+fun RecipeCard(recipe: Recipe, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier,
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
         AsyncImage(
-            model = ImageRequest.Builder(context = LocalContext.current).data(photo.imgSrc)
+            model = ImageRequest.Builder(context = LocalContext.current).data(recipe.imgSrc)
                 .crossfade(true).build(),
             error = painterResource(R.drawable.ic_broken_image),
             placeholder = painterResource(R.drawable.loading_img),
