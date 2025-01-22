@@ -12,14 +12,14 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.recipes.RecipeApplication
 import com.example.recipes.data.RecipeRepository
-import com.example.recipes.model.Recipe
+import com.example.recipes.model.RecipesResponse
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
 sealed interface RecipeUiState {
 //   todo add different states
-    data class Success(val recipes: List<Recipe>) : RecipeUiState
+    data class Success(val recipes: RecipesResponse) : RecipeUiState
     object Error : RecipeUiState
     object Loading : RecipeUiState
 }

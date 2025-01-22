@@ -29,6 +29,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
+import com.example.recipes.model.RecipesResponse
 
 @Composable
 fun HomeScreen(
@@ -72,7 +73,7 @@ fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
 }
 @Composable
 fun RecipesGridScreen(
-    recipes: List<Recipe>,
+    data: RecipesResponse,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
@@ -81,7 +82,7 @@ fun RecipesGridScreen(
         modifier = modifier.padding(horizontal = 4.dp),
         contentPadding = contentPadding
     ) {
-        items(items = recipes, key = { recipe -> recipe.id }) { recipe ->
+        items(items = data.recipes, key = { recipe -> recipe.id }) { recipe ->
             RecipeCard(
                 recipe,
                 modifier = Modifier
@@ -100,7 +101,7 @@ fun RecipeCard(recipe: Recipe, modifier: Modifier = Modifier) {
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
         AsyncImage(
-            model = ImageRequest.Builder(context = LocalContext.current).data(recipe.imgSrc)
+            model = ImageRequest.Builder(context = LocalContext.current).data(recipe.image)
                 .crossfade(true).build(),
             error = painterResource(R.drawable.ic_broken_image),
             placeholder = painterResource(R.drawable.loading_img),
