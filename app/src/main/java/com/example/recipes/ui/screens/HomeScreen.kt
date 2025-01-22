@@ -1,12 +1,11 @@
 package com.example.recipes.ui.screens
 
 import android.util.Log
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -25,57 +24,37 @@ import com.example.recipes.model.Recipe
 import com.example.recipes.R
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.ui.Alignment
+import androidx.compose.material3.Surface
 import com.example.recipes.model.RecipesResponse
+import com.example.recipes.ui.RecipeApp
+import com.example.recipes.ui.theme.RecipeAppTheme
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.content.MediaType.Companion.Text
+import androidx.compose.material3.Text
+import com.example.recipes.MainActivity
 
 @Composable
 fun HomeScreen(
     recipeUiState: RecipeUiState,
     retryAction: () -> Unit,
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp)
+    contentPadding: PaddingValues = PaddingValues(0.dp),
+    onCardClick: (Recipe) -> Unit
 ) {
     Log.i("test", "home screen")
     when(recipeUiState) {
         is RecipeUiState.Loading -> LoadingScreen(modifier = modifier)
-        is RecipeUiState.Success -> RecipesGridScreen(recipeUiState.recipes, contentPadding = contentPadding, modifier = modifier.fillMaxWidth())
+        is RecipeUiState.Success -> RecipesGridScreen(recipeUiState.recipes, contentPadding = contentPadding, modifier = modifier.fillMaxWidth(), onCardClick = onCardClick)
         is RecipeUiState.Error -> ErrorScreen(retryAction, modifier = modifier.fillMaxWidth())
     }
 }
 
 @Composable
-fun LoadingScreen(modifier: Modifier = Modifier) {
-    Image(
-        modifier = modifier.size(200.dp),
-        painter = painterResource(R.drawable.loading_img),
-        contentDescription = stringResource(R.string.loading)
-    )
-}
-@Composable
-fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
-    Log.i("test", "error screen")
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_connection_error), contentDescription = ""
-        )
-        Text(text = stringResource(R.string.loading_failed), modifier = Modifier.padding(16.dp))
-        Button(onClick = retryAction) {
-            Text(stringResource(R.string.retry))
-        }
-    }
-}
-@Composable
 fun RecipesGridScreen(
     data: RecipesResponse,
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp)
+    contentPadding: PaddingValues = PaddingValues(0.dp),
+    onCardClick: (Recipe) -> Unit
 ) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(150.dp),
@@ -88,26 +67,22 @@ fun RecipesGridScreen(
                 modifier = Modifier
                     .padding(4.dp)
                     .fillMaxWidth()
-                    .aspectRatio(1.5f)
+                    .aspectRatio(1.5f),
+                onCardClick = {   onCardClick(recipe) },
             )
         }
     }
 }
+
 @Composable
-fun RecipeCard(recipe: Recipe, modifier: Modifier = Modifier) {
+fun RecipeCard(recipe: Recipe, modifier: Modifier = Modifier, onCardClick: (Recipe) -> Unit) {
     Card(
+        onClick = { onCardClick(recipe) },
         modifier = modifier,
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
-        AsyncImage(
-            model = ImageRequest.Builder(context = LocalContext.current).data(recipe.image)
-                .crossfade(true).build(),
-            error = painterResource(R.drawable.ic_broken_image),
-            placeholder = painterResource(R.drawable.loading_img),
-            contentDescription = stringResource(R.string.app_name),
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxWidth()
-        )
+        RecipeImage(recipe, modifier = Modifier.fillMaxWidth())
+        Text(recipe.title)
     }
 }

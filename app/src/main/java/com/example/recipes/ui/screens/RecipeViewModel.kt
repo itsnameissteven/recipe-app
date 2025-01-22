@@ -18,7 +18,6 @@ import retrofit2.HttpException
 import java.io.IOException
 
 sealed interface RecipeUiState {
-//   todo add different states
     data class Success(val recipes: RecipesResponse) : RecipeUiState
     object Error : RecipeUiState
     object Loading : RecipeUiState
