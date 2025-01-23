@@ -66,7 +66,7 @@ fun RecipeColumnScreen(
         Column(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 32.dp)
+                .padding(start = 16.dp, end = 16.dp, top = 16.dp)
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.Start,
@@ -96,9 +96,6 @@ fun RecipeColumnScreen(
                 .padding(top = 16.dp),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.Start) {
-//                Button(onClick = onBackClick, ) {
-//                    Text("Back")
-//                }
                 Text(data.title, fontWeight = FontWeight.Bold, fontSize = 24.sp )
                 HTMLText(text = data.summary)
                 HeaderText("Ingredients:")
@@ -110,7 +107,7 @@ fun RecipeColumnScreen(
                     }
                 }
                 HeaderText("Instructions:")
-                HTMLText(text = data.instructions)
+                HTMLText(text = data.instructions, modifier = Modifier.padding(bottom = 8.dp))
             }
         }
     }
@@ -122,12 +119,11 @@ fun HeaderText(text: String) {
 }
 
 @Composable
-fun HTMLText(text: String) {
+fun HTMLText(text: String, modifier: Modifier = Modifier) {
     val spannedText = HtmlCompat.fromHtml(text, 0)
     AndroidView(
-        modifier = Modifier.padding(top = 16.dp),
+        modifier = modifier.padding(top = 16.dp),
         factory = { MaterialTextView(it).apply {
-            // links
             autoLinkMask = Linkify.WEB_URLS
             linksClickable = true
             lineHeight = 60

@@ -8,7 +8,7 @@ import retrofit2.http.Path
 
 const val apiKey = BuildConfig.API_KEY
 interface RecipeApiService {
-    @GET("random?number=1&apiKey=${apiKey}")
+    @GET("random?number=2&apiKey=${apiKey}")
     suspend fun getRecipes(): RecipesResponse
 
     @GET("{id}/information?apiKey=${apiKey}")

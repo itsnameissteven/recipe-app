@@ -30,6 +30,8 @@ import com.example.recipes.ui.RecipeApp
 import com.example.recipes.ui.theme.RecipeAppTheme
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.content.MediaType.Companion.Text
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Text
 import com.example.recipes.MainActivity
 
@@ -58,7 +60,7 @@ fun RecipesGridScreen(
 ) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(150.dp),
-        modifier = modifier.padding(horizontal = 4.dp),
+        modifier = modifier.padding(horizontal = 4.dp, vertical = 4.dp),
         contentPadding = contentPadding
     ) {
         items(items = data.recipes, key = { recipe -> recipe.id }) { recipe ->
@@ -67,7 +69,7 @@ fun RecipesGridScreen(
                 modifier = Modifier
                     .padding(4.dp)
                     .fillMaxWidth()
-                    .aspectRatio(1.5f),
+                    .fillMaxHeight(),
                 onCardClick = {   onCardClick(recipe) },
             )
         }
@@ -78,11 +80,12 @@ fun RecipesGridScreen(
 fun RecipeCard(recipe: Recipe, modifier: Modifier = Modifier, onCardClick: (Recipe) -> Unit) {
     Card(
         onClick = { onCardClick(recipe) },
-        modifier = modifier,
+        modifier = modifier.height(225.dp),
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+
     ) {
-        RecipeImage(recipe, modifier = Modifier.fillMaxWidth())
-        Text(recipe.title)
+        RecipeImage(recipe, modifier = Modifier.fillMaxWidth().aspectRatio(1.4f))
+        Text(recipe.title, modifier = Modifier.padding(8.dp), style = MaterialTheme.typography.titleMedium)
     }
 }
