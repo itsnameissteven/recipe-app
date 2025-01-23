@@ -32,21 +32,15 @@ class RecipeViewModel(private val recipeRepository: RecipeRepository) : ViewMode
    }
 
     fun getAppRecipes() {
-        Log.i("init", "getting recipes")
         viewModelScope.launch {
             recipesUiState = RecipeUiState.Loading
             recipesUiState = try {
-                Log.i("test", "success")
                 RecipeUiState.Success(recipeRepository.getRecipes())
             } catch (e: IOException) {
-                Log.i("test", e.message ?: "one message")
-                println(e)
                 RecipeUiState.Error
             } catch (e: HttpException) {
-                Log.i("test2", e.message ?: "two message")
                 RecipeUiState.Error
             } catch (e: Exception) {
-                Log.i("test3", e.message ?: "3 message")
                 RecipeUiState.Error
             }
         }

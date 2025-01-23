@@ -26,3 +26,15 @@ data class Ingredient (
 data class RecipesResponse (
     val recipes: List<Recipe>
 )
+
+@Serializable
+data class BaseRecipe (
+    val id: Int,
+    val title: String,
+    val image: String,
+)
+
+@Serializable
+data class SearchResponse (
+    val results: List<BaseRecipe>
+)
