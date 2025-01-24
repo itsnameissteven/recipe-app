@@ -20,20 +20,22 @@ import com.example.recipes.ui.screens.RecipeDetailScreen
 import com.example.recipes.ui.screens.RecipeViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.recipes.model.Recipe
+import com.example.recipes.model.ShallowRecipe
 import com.example.recipes.ui.screens.BottomNavigationBar
 import com.example.recipes.ui.screens.RecipeDetailViewModel
+import com.example.recipes.ui.screens.SearchScreen
+import com.example.recipes.ui.screens.SearchViewModel
 
 
 @Composable
-fun RecipeApp(onCardClick: (Recipe) -> Unit) {
+fun RecipeApp(onCardClick: (ShallowRecipe) -> Unit, selectedItem: MutableState<Int>) {
     AppScaffold(
-       text = stringResource(R.string.app_name)
+       text = stringResource(R.string.app_name), selectedItem = selectedItem
     ) {
         Surface(
             modifier = Modifier.fillMaxSize().padding(),
@@ -52,14 +54,14 @@ fun RecipeApp(onCardClick: (Recipe) -> Unit) {
 
 
 @Composable
-fun RecipeDetail(recipe: Recipe, onBackClick: () -> Unit) {
-    AppScaffold() { contentPadding ->
+fun RecipeDetail(recipe: ShallowRecipe, onBackClick: () -> Unit, selectedItem: MutableState<Int>) {
+    AppScaffold(selectedItem = selectedItem) { contentPadding ->
         Surface(
             modifier = Modifier.fillMaxSize().padding(contentPadding),
         ) {
             val recipeDetailsViewModel: RecipeDetailViewModel  =
                 viewModel(factory = RecipeDetailViewModel.provideFactory(recipe))
-            fun getRecipe(recipe: Recipe) {
+            fun getRecipe(recipe: ShallowRecipe) {
                 recipeDetailsViewModel.getRecipe(recipe)
             }
             RecipeDetailScreen(
@@ -71,17 +73,38 @@ fun RecipeDetail(recipe: Recipe, onBackClick: () -> Unit) {
     }
 }
 
+@Composable
+fun SearchDetails(onCardClick: (ShallowRecipe) -> Unit, selectedItem: MutableState<Int>) {
+    AppScaffold(selectedItem = selectedItem) {
+        Surface(
+            modifier = Modifier.fillMaxSize().padding(it),
+        ) {
+            val searchViewModel: SearchViewModel =
+                viewModel(factory = SearchViewModel.Factory)
+            SearchScreen(
+                state = searchViewModel.state,
+                retryAction = {},
+                contentPadding = it,
+                onCardClick = onCardClick,
+                onSearch = searchViewModel::search
+            )
+        }
+    }
+}
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppScaffold(text: String = "", content: @Composable (PaddingValues) -> Unit) {
+fun AppScaffold(text: String = "",selectedItem: MutableState<Int>, content: @Composable (PaddingValues) -> Unit) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = { RecipeAppTopBar(scrollBehavior = scrollBehavior, text = text) },
-        bottomBar = { BottomNavigationBar() },
+        bottomBar = { BottomNavigationBar(selectedItem = selectedItem) },
         content = content
     )
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecipeAppTopBar(scrollBehavior: TopAppBarScrollBehavior, modifier: Modifier = Modifier, text: String = "") {

@@ -1,27 +1,21 @@
 package com.example.recipes.ui.screens
 
-import android.text.Html
 import android.text.util.Linkify
 import android.util.Log
-import android.widget.TextView
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -45,7 +39,6 @@ fun RecipeDetailScreen(
     contentPadding: PaddingValues = PaddingValues(0.dp),
     onBackClick: () -> Unit
 ) {
-    Log.i("test", "home screen")
     when(recipeDetailUiState) {
         is RecipeDetailUiState.Loading -> LoadingScreen(modifier = modifier)
         is RecipeDetailUiState.Success -> RecipeColumnScreen(recipeDetailUiState.recipe, modifier = modifier.fillMaxWidth(), onBackClick = onBackClick, contentPadding)

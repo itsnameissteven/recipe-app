@@ -4,8 +4,16 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,13 +35,21 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.remember
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
+import com.example.recipes.model.BaseRecipe
+import com.example.recipes.model.RecipesResponse
+import com.example.recipes.model.SearchResponse
+import com.example.recipes.model.ShallowRecipe
 
 @Composable
 fun LoadingScreen(modifier: Modifier = Modifier) {
@@ -63,7 +79,7 @@ fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun RecipeImage(recipe: Recipe, modifier: Modifier = Modifier) {
+fun RecipeImage(recipe: ShallowRecipe, modifier: Modifier = Modifier) {
     AsyncImage(
         model = ImageRequest.Builder(context = LocalContext.current).data(recipe.image)
             .crossfade(true).build(),
@@ -77,8 +93,7 @@ fun RecipeImage(recipe: Recipe, modifier: Modifier = Modifier) {
 
 
 @Composable
-fun BottomNavigationBar() {
-    var selectedItem by remember { mutableIntStateOf(0) }
+fun BottomNavigationBar(selectedItem: MutableState<Int>) {
     val items = listOf("Browse", "Favorites", "Search")
     val selectedIcons = listOf(Icons.Filled.Home, Icons.Filled.Favorite, Icons.Filled.Search)
     val unselectedIcons =
@@ -88,15 +103,81 @@ fun BottomNavigationBar() {
             NavigationBarItem(
                 icon = {
                     Icon(
-                        if (selectedItem == index) selectedIcons[index] else unselectedIcons[index],
+                        if (selectedItem.value == index) selectedIcons[index] else unselectedIcons[index],
                         contentDescription = item
                     )
                 },
                 label = { Text(item) },
-                selected = selectedItem == index,
-                onClick = { selectedItem = index }
+                selected = selectedItem.value == index,
+                onClick = { selectedItem.value = index }
             )
         }
     }
 }
 
+@Composable
+fun RecipesGridScreen(
+    data: List<ShallowRecipe>,
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
+    onCardClick: (ShallowRecipe) -> Unit,
+) {
+    Log.i("recipeGrid screen", "grid screen")
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(150.dp),
+        modifier = modifier.padding(horizontal = 4.dp, vertical = 4.dp),
+        contentPadding = contentPadding
+    ) {
+        items(items = data, key = { recipe -> recipe.id }) { recipe ->
+            Log.i("recipeGrid recipe", recipe.title)
+            RecipeCard(
+                recipe,
+                modifier = Modifier
+                    .padding(4.dp)
+                    .fillMaxWidth()
+                    .fillMaxHeight(),
+                onCardClick = {   onCardClick(recipe) },
+            )
+        }
+    }
+}
+
+@Composable
+fun SearchRecipesGridScreen(
+    data: SearchResponse,
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
+    onCardClick: (recipe: ShallowRecipe) -> Unit,
+) {
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(150.dp),
+        modifier = modifier.padding(horizontal = 4.dp, vertical = 4.dp),
+        contentPadding = contentPadding
+    ) {
+        items(items = data.results, key = { recipe -> recipe.id }) { recipe ->
+//            todo look into generics here
+            RecipeCard(
+                recipe,
+                modifier = Modifier
+                    .padding(4.dp)
+                    .fillMaxWidth()
+                    .fillMaxHeight(),
+                onCardClick = {   onCardClick(recipe) },
+            )
+        }
+    }
+}
+
+@Composable
+fun RecipeCard(recipe: ShallowRecipe, modifier: Modifier = Modifier, onCardClick: (ShallowRecipe) -> Unit) {
+    Card(
+        onClick = { onCardClick(recipe) },
+        modifier = modifier.height(225.dp),
+        shape = MaterialTheme.shapes.medium,
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+
+    ) {
+        RecipeImage(recipe, modifier = Modifier.fillMaxWidth().aspectRatio(1.4f))
+        Text(recipe.title, modifier = Modifier.padding(8.dp), style = MaterialTheme.typography.titleMedium)
+    }
+}

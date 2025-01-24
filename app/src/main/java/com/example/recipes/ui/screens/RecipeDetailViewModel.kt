@@ -14,6 +14,7 @@ import com.example.recipes.RecipeApplication
 import com.example.recipes.data.RecipeRepository
 import com.example.recipes.model.Recipe
 import com.example.recipes.model.RecipesResponse
+import com.example.recipes.model.ShallowRecipe
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -24,7 +25,7 @@ sealed interface RecipeDetailUiState {
     object Loading : RecipeDetailUiState
 }
 
-class RecipeDetailViewModel(private val recipeRepository: RecipeRepository, recipe: Recipe) : ViewModel() {
+class RecipeDetailViewModel(private val recipeRepository: RecipeRepository, recipe: ShallowRecipe) : ViewModel() {
     var recipeDetailsUiState: RecipeDetailUiState by mutableStateOf(RecipeDetailUiState.Loading)
         private set
 
@@ -32,7 +33,7 @@ class RecipeDetailViewModel(private val recipeRepository: RecipeRepository, reci
         getRecipe(recipe)
     }
 
-    fun getRecipe(recipe: Recipe) {
+    fun getRecipe(recipe: ShallowRecipe) {
         viewModelScope.launch {
             recipeDetailsUiState = RecipeDetailUiState.Loading
 
@@ -55,7 +56,7 @@ class RecipeDetailViewModel(private val recipeRepository: RecipeRepository, reci
     }
 
     companion object {
-        fun provideFactory (recipe: Recipe): ViewModelProvider.Factory = viewModelFactory {
+        fun provideFactory (recipe: ShallowRecipe): ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = (this[APPLICATION_KEY] as RecipeApplication)
                 val recipeRepository = application.container.recipeRepository
