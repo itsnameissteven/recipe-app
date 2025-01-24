@@ -1,6 +1,7 @@
 package com.example.recipes
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.compose.setContent
@@ -23,7 +24,10 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.example.recipes.data.DataManager
+import com.example.recipes.model.Favorite
 import com.example.recipes.model.ShallowRecipe
+import com.example.recipes.ui.FavoritesDetail
 import com.example.recipes.ui.RecipeApp
 import com.example.recipes.ui.RecipeDetail
 import com.example.recipes.ui.SearchDetails
@@ -32,13 +36,18 @@ import com.example.recipes.ui.theme.RecipeAppTheme
 
 
 class MainActivity : ComponentActivity() {
-    private var selectedRecipe: MutableState<ShallowRecipe?> = mutableStateOf(null)
-    var selectedItem: MutableState<Int> = mutableIntStateOf(0)
-
-    fun setSelectedItem(item: Int) {
-        selectedItem.value = item
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
+        val selectedRecipe: MutableState<ShallowRecipe?> = mutableStateOf(null)
+        val selectedItem: MutableState<Int> = mutableIntStateOf(0)
+        val favorites: MutableState<List<Favorite>> = mutableStateOf(listOf())
+        val dm = DataManager(this)
+        favorites.value = dm.selectAll()
+
+        fun setSelectedItem(item: Int) {
+            selectedRecipe.value = null
+            selectedItem.value = item
+        }
+
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
@@ -47,13 +56,22 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                 ) {
                     if(selectedRecipe.value != null) {
+                        Log.i("selectedRecipe", selectedRecipe.value!!.title)
                         AppScaffold(
                             selectedItem = selectedItem.value,
                             setSelectedItem = { item -> setSelectedItem(item) }
                         ) {
                             RecipeDetail(
                                 selectedRecipe.value!!,
-                                onBackClick = { selectedRecipe.value = null },
+                                isFavorite = favorites.value.any { it.recipeId == selectedRecipe.value!!.id },
+                                onClick = { recipe ->
+                                    if(favorites.value.any { it.recipeId == recipe.id }) {
+                                        dm.delete(recipe.id)
+                                    } else {
+                                        dm.insert(recipe.id)
+                                    }
+                                    favorites.value = dm.selectAll()
+                                }
                             )
                         }
                     } else {
@@ -65,11 +83,26 @@ class MainActivity : ComponentActivity() {
                             ) {
                                 RecipeApp(
                                     onCardClick = { recipe ->
+                                        selectedItem.value = 4
                                         selectedRecipe.value = recipe
                                     },
                                     contentPadding = it
                                 )
                             }
+                            } else if (selectedItem.value == 1) {
+                                AppScaffold(
+                                    selectedItem = selectedItem.value,
+                                    setSelectedItem = { item -> setSelectedItem(item) }
+                                ) {
+                                    FavoritesDetail(
+                                        favorites = favorites.value,
+                                        contentPadding = it,
+                                        onCardClick = { recipe ->
+                                            selectedItem.value = 4
+                                            selectedRecipe.value = recipe
+                                        }
+                                    )
+                                }
                             } else if(selectedItem.value == 2) {
                                 AppScaffold(
                                     selectedItem = selectedItem.value,
@@ -77,6 +110,7 @@ class MainActivity : ComponentActivity() {
                                 ) {
                                     SearchDetails(
                                         onCardClick = { recipe ->
+                                            selectedItem.value = 4
                                             selectedRecipe.value = recipe
                                         },
                                         contentPadding = it

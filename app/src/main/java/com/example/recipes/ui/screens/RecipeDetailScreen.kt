@@ -4,7 +4,6 @@ import android.text.util.Linkify
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,11 +34,13 @@ fun RecipeDetailScreen(
     recipeDetailUiState: RecipeDetailUiState,
     retryAction: () -> Unit,
     modifier: Modifier = Modifier,
-    onBackClick: () -> Unit
+    onClick: (Recipe) -> Unit,
+    isFavorite: Boolean
 ) {
+
     when(recipeDetailUiState) {
         is RecipeDetailUiState.Loading -> LoadingScreen(modifier = modifier)
-        is RecipeDetailUiState.Success -> RecipeColumnScreen(recipeDetailUiState.recipe, modifier = modifier.fillMaxWidth(), onBackClick = onBackClick)
+        is RecipeDetailUiState.Success -> RecipeColumnScreen(recipeDetailUiState.recipe, modifier = modifier.fillMaxWidth(), onClick = onClick, isFavorite = isFavorite)
         is RecipeDetailUiState.Error -> ErrorScreen(retryAction, modifier = modifier.fillMaxWidth())
     }
 }
@@ -48,8 +49,10 @@ fun RecipeDetailScreen(
 fun RecipeColumnScreen(
     data: Recipe,
     modifier: Modifier = Modifier,
-    onBackClick: () -> Unit,
+    onClick: (Recipe) -> Unit,
+    isFavorite: Boolean
 ) {
+    val btnContent = if(isFavorite) "-" else "+"
     Surface(
         modifier = Modifier.fillMaxSize(),
     ) {
@@ -70,7 +73,7 @@ fun RecipeColumnScreen(
 
                 RecipeImage(data, modifier.fillMaxWidth())
                 Button(
-                    onClick = onBackClick,
+                    onClick = { onClick(data) },
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
                         .padding(16.dp)
@@ -78,7 +81,7 @@ fun RecipeColumnScreen(
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
                     shape = CircleShape,
                 ) {
-                    Text("+", color = Color.White, fontSize = 24.sp, textAlign = TextAlign.Center)
+                    Text(btnContent, color = Color.White, fontSize = 24.sp, textAlign = TextAlign.Center)
                 }
             }
             Column(modifier = Modifier

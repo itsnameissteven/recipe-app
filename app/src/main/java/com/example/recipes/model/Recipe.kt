@@ -43,3 +43,9 @@ data class BaseRecipe (
 data class SearchResponse (
     val results: List<BaseRecipe>
 )
+
+@Serializable
+data class Favorite (
+    val id: Int,
+    val recipeId: Int,
+)

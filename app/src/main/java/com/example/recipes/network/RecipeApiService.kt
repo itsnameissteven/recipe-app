@@ -21,4 +21,7 @@ interface RecipeApiService {
                               @Query("number") number: Int = 2,
                               @Query("apiKey") apiKey: String = BuildConfig.API_KEY
                     ): SearchResponse
+    @GET("informationBulk")
+    suspend fun getFavorites(@Query("ids") ids: String,
+                             @Query("apiKey") apiKey: String = BuildConfig.API_KEY): List<Recipe>
 }
