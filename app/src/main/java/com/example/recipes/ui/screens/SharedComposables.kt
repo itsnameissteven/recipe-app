@@ -46,8 +46,10 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
+import com.example.recipes.model.BaseRecipe
 import com.example.recipes.model.RecipesResponse
 import com.example.recipes.model.SearchResponse
+import com.example.recipes.model.ShallowRecipe
 
 @Composable
 fun LoadingScreen(modifier: Modifier = Modifier) {
@@ -77,7 +79,7 @@ fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun RecipeImage(recipe: Recipe, modifier: Modifier = Modifier) {
+fun RecipeImage(recipe: ShallowRecipe, modifier: Modifier = Modifier) {
     AsyncImage(
         model = ImageRequest.Builder(context = LocalContext.current).data(recipe.image)
             .crossfade(true).build(),
@@ -115,17 +117,19 @@ fun BottomNavigationBar(selectedItem: MutableState<Int>) {
 
 @Composable
 fun RecipesGridScreen(
-    data: RecipesResponse,
+    data: List<ShallowRecipe>,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
-    onCardClick: (Recipe) -> Unit,
+    onCardClick: (ShallowRecipe) -> Unit,
 ) {
+    Log.i("recipeGrid screen", "grid screen")
     LazyVerticalGrid(
         columns = GridCells.Adaptive(150.dp),
         modifier = modifier.padding(horizontal = 4.dp, vertical = 4.dp),
         contentPadding = contentPadding
     ) {
-        items(items = data.recipes, key = { recipe -> recipe.id }) { recipe ->
+        items(items = data, key = { recipe -> recipe.id }) { recipe ->
+            Log.i("recipeGrid recipe", recipe.title)
             RecipeCard(
                 recipe,
                 modifier = Modifier
@@ -143,7 +147,7 @@ fun SearchRecipesGridScreen(
     data: SearchResponse,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
-    onCardClick: (Recipe) -> Unit,
+    onCardClick: (recipe: ShallowRecipe) -> Unit,
 ) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(150.dp),
@@ -165,7 +169,7 @@ fun SearchRecipesGridScreen(
 }
 
 @Composable
-fun RecipeCard(recipe: Recipe, modifier: Modifier = Modifier, onCardClick: (Recipe) -> Unit) {
+fun RecipeCard(recipe: ShallowRecipe, modifier: Modifier = Modifier, onCardClick: (ShallowRecipe) -> Unit) {
     Card(
         onClick = { onCardClick(recipe) },
         modifier = modifier.height(225.dp),

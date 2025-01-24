@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.example.recipes.model.Recipe
+import com.example.recipes.model.ShallowRecipe
 import com.example.recipes.ui.RecipeApp
 import com.example.recipes.ui.RecipeDetail
 import com.example.recipes.ui.SearchDetails
@@ -21,8 +22,8 @@ import com.example.recipes.ui.theme.RecipeAppTheme
 
 
 class MainActivity : ComponentActivity() {
-    private var selectedRecipe: MutableState<Recipe?> = mutableStateOf(null)
-    var selectedItem: MutableState<Int> = mutableIntStateOf(2)
+    private var selectedRecipe: MutableState<ShallowRecipe?> = mutableStateOf(null)
+    var selectedItem: MutableState<Int> = mutableIntStateOf(0)
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)

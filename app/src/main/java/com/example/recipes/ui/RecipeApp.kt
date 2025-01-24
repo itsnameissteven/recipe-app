@@ -25,6 +25,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.recipes.model.Recipe
+import com.example.recipes.model.ShallowRecipe
 import com.example.recipes.ui.screens.BottomNavigationBar
 import com.example.recipes.ui.screens.RecipeDetailViewModel
 import com.example.recipes.ui.screens.SearchScreen
@@ -32,7 +33,7 @@ import com.example.recipes.ui.screens.SearchViewModel
 
 
 @Composable
-fun RecipeApp(onCardClick: (Recipe) -> Unit, selectedItem: MutableState<Int>) {
+fun RecipeApp(onCardClick: (ShallowRecipe) -> Unit, selectedItem: MutableState<Int>) {
     AppScaffold(
        text = stringResource(R.string.app_name), selectedItem = selectedItem
     ) {
@@ -53,14 +54,14 @@ fun RecipeApp(onCardClick: (Recipe) -> Unit, selectedItem: MutableState<Int>) {
 
 
 @Composable
-fun RecipeDetail(recipe: Recipe, onBackClick: () -> Unit, selectedItem: MutableState<Int>) {
+fun RecipeDetail(recipe: ShallowRecipe, onBackClick: () -> Unit, selectedItem: MutableState<Int>) {
     AppScaffold(selectedItem = selectedItem) { contentPadding ->
         Surface(
             modifier = Modifier.fillMaxSize().padding(contentPadding),
         ) {
             val recipeDetailsViewModel: RecipeDetailViewModel  =
                 viewModel(factory = RecipeDetailViewModel.provideFactory(recipe))
-            fun getRecipe(recipe: Recipe) {
+            fun getRecipe(recipe: ShallowRecipe) {
                 recipeDetailsViewModel.getRecipe(recipe)
             }
             RecipeDetailScreen(
@@ -73,7 +74,7 @@ fun RecipeDetail(recipe: Recipe, onBackClick: () -> Unit, selectedItem: MutableS
 }
 
 @Composable
-fun SearchDetails(onCardClick: (Recipe) -> Unit, selectedItem: MutableState<Int>) {
+fun SearchDetails(onCardClick: (ShallowRecipe) -> Unit, selectedItem: MutableState<Int>) {
     AppScaffold(selectedItem = selectedItem) {
         Surface(
             modifier = Modifier.fillMaxSize().padding(it),

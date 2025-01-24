@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.recipes.model.Recipe
 import androidx.compose.foundation.layout.fillMaxWidth
+import com.example.recipes.model.ShallowRecipe
 
 
 @Composable
@@ -14,11 +15,11 @@ fun HomeScreen(
     retryAction: () -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
-    onCardClick: (Recipe) -> Unit,
+    onCardClick: (ShallowRecipe) -> Unit,
 ) {
     when(recipeUiState) {
         is RecipeUiState.Loading -> LoadingScreen(modifier = modifier)
-        is RecipeUiState.Success -> RecipesGridScreen(recipeUiState.recipes, contentPadding = contentPadding, modifier = modifier.fillMaxWidth(), onCardClick = onCardClick)
+        is RecipeUiState.Success -> RecipesGridScreen(recipeUiState.recipes.recipes, contentPadding = contentPadding, modifier = modifier.fillMaxWidth(), onCardClick = onCardClick)
         is RecipeUiState.Error -> ErrorScreen(retryAction, modifier = modifier.fillMaxWidth())
     }
 }
