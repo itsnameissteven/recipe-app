@@ -14,9 +14,15 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,6 +34,7 @@ import com.example.recipes.model.Recipe
 import com.google.android.material.textview.MaterialTextView
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.font.FontWeight
+import kotlinx.coroutines.launch
 
 @Composable
 fun RecipeDetailScreen(
@@ -53,6 +60,9 @@ fun RecipeColumnScreen(
     isFavorite: Boolean
 ) {
     val btnContent = if(isFavorite) "-" else "+"
+    val snackbarContent = if(isFavorite) "Removed from favorites" else "Added to favorites"
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
     Surface(
         modifier = Modifier.fillMaxSize(),
     ) {
@@ -73,7 +83,16 @@ fun RecipeColumnScreen(
 
                 RecipeImage(data, modifier.fillMaxWidth())
                 Button(
-                    onClick = { onClick(data) },
+                    onClick = {
+                        onClick(data)
+                        scope.launch {
+                            snackbarHostState.showSnackbar(
+                                message = snackbarContent,
+                                actionLabel = "OK",
+                                duration = SnackbarDuration.Short,
+                            )
+                        }
+                              },
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
                         .padding(16.dp)
@@ -84,6 +103,15 @@ fun RecipeColumnScreen(
                     Text(btnContent, color = Color.White, fontSize = 24.sp, textAlign = TextAlign.Center)
                 }
             }
+            SnackbarHost(
+                hostState = snackbarHostState,
+                snackbar = { snackbarData ->
+                    Snackbar(
+                        snackbarData = snackbarData,
+                        actionOnNewLine = false
+                    )
+                }
+            )
             Column(modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),

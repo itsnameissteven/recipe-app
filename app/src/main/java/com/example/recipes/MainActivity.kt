@@ -89,20 +89,21 @@ class MainActivity : ComponentActivity() {
                                     contentPadding = it
                                 )
                             }
-                            } else if (selectedItem.value == 1) {
-                                AppScaffold(
-                                    selectedItem = selectedItem.value,
-                                    setSelectedItem = { item -> setSelectedItem(item) }
-                                ) {
-                                    FavoritesDetail(
-                                        favorites = favorites.value,
-                                        contentPadding = it,
-                                        onCardClick = { recipe ->
-                                            selectedItem.value = 4
-                                            selectedRecipe.value = recipe
-                                        }
-                                    )
-                                }
+                        } else if (selectedItem.value == 1) {
+                            AppScaffold(
+                                stringResource(R.string.favorites),
+                                selectedItem = selectedItem.value,
+                                setSelectedItem = { item -> setSelectedItem(item) }
+                            ) {
+                                FavoritesDetail(
+                                    favorites = favorites.value,
+                                    contentPadding = it,
+                                    onCardClick = { recipe ->
+                                        selectedItem.value = 4
+                                        selectedRecipe.value = recipe
+                                    }
+                                )
+                            }
                             } else if(selectedItem.value == 2) {
                                 AppScaffold(
                                     selectedItem = selectedItem.value,
