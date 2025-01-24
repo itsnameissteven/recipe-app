@@ -2,6 +2,7 @@ package com.example.recipes.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+
 interface ShallowRecipe {
     val id: Int
     val title: String

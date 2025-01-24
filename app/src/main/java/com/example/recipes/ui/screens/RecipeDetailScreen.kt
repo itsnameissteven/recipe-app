@@ -1,7 +1,6 @@
 package com.example.recipes.ui.screens
 
 import android.text.util.Linkify
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,12 +35,11 @@ fun RecipeDetailScreen(
     recipeDetailUiState: RecipeDetailUiState,
     retryAction: () -> Unit,
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
     onBackClick: () -> Unit
 ) {
     when(recipeDetailUiState) {
         is RecipeDetailUiState.Loading -> LoadingScreen(modifier = modifier)
-        is RecipeDetailUiState.Success -> RecipeColumnScreen(recipeDetailUiState.recipe, modifier = modifier.fillMaxWidth(), onBackClick = onBackClick, contentPadding)
+        is RecipeDetailUiState.Success -> RecipeColumnScreen(recipeDetailUiState.recipe, modifier = modifier.fillMaxWidth(), onBackClick = onBackClick)
         is RecipeDetailUiState.Error -> ErrorScreen(retryAction, modifier = modifier.fillMaxWidth())
     }
 }
@@ -51,7 +49,6 @@ fun RecipeColumnScreen(
     data: Recipe,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
-    contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),

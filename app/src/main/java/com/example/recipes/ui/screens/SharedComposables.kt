@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.recipes.R
-import com.example.recipes.model.Recipe
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
@@ -39,15 +38,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.remember
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.setValue
-import com.example.recipes.model.BaseRecipe
-import com.example.recipes.model.RecipesResponse
 import com.example.recipes.model.SearchResponse
 import com.example.recipes.model.ShallowRecipe
 
@@ -93,7 +85,7 @@ fun RecipeImage(recipe: ShallowRecipe, modifier: Modifier = Modifier) {
 
 
 @Composable
-fun BottomNavigationBar(selectedItem: MutableState<Int>) {
+fun BottomNavigationBar(selectedItem: Int, setSelectedItem: (Int) -> Unit) {
     val items = listOf("Browse", "Favorites", "Search")
     val selectedIcons = listOf(Icons.Filled.Home, Icons.Filled.Favorite, Icons.Filled.Search)
     val unselectedIcons =
@@ -103,13 +95,13 @@ fun BottomNavigationBar(selectedItem: MutableState<Int>) {
             NavigationBarItem(
                 icon = {
                     Icon(
-                        if (selectedItem.value == index) selectedIcons[index] else unselectedIcons[index],
+                        if (selectedItem == index) selectedIcons[index] else unselectedIcons[index],
                         contentDescription = item
                     )
                 },
                 label = { Text(item) },
-                selected = selectedItem.value == index,
-                onClick = { selectedItem.value = index }
+                selected = selectedItem == index,
+                onClick = { setSelectedItem(index) }
             )
         }
     }
