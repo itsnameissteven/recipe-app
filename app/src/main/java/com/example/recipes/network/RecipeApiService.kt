@@ -9,8 +9,10 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 const val apiKey = BuildConfig.API_KEY
+// Fetch functions supported by the Retrofit library
 interface RecipeApiService {
-    @GET("random?number=2&apiKey=${apiKey}")
+    // return arbitrary number of recipes to keep api cost free
+    @GET("random?number=10&apiKey=${apiKey}")
     suspend fun getRecipes(): RecipesResponse
 
     @GET("{id}/information?apiKey=${apiKey}")
@@ -18,7 +20,7 @@ interface RecipeApiService {
 
     @GET("complexSearch")
     suspend fun searchRecipes(@Query("query") query: String,
-                              @Query("number") number: Int = 2,
+                              @Query("number") number: Int = 10,
                               @Query("apiKey") apiKey: String = BuildConfig.API_KEY
                     ): SearchResponse
     @GET("informationBulk")

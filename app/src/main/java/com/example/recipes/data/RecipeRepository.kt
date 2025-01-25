@@ -4,7 +4,7 @@ import com.example.recipes.model.Recipe
 import com.example.recipes.model.RecipesResponse
 import com.example.recipes.model.SearchResponse
 import com.example.recipes.network.RecipeApiService
-
+// Interface to consume the recipe API and return functions (the same ones as noted in recipeApiService)
 interface RecipeRepository {
     suspend fun getRecipes(): RecipesResponse
     suspend fun getRecipe(id: Int): Recipe

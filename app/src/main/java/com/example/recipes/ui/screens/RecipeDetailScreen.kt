@@ -82,6 +82,7 @@ fun RecipeColumnScreen(
             ) {
 
                 RecipeImage(data, modifier.fillMaxWidth())
+                // Favorites button to save or delete recipe from favorites
                 Button(
                     onClick = {
                         onClick(data)
@@ -103,6 +104,7 @@ fun RecipeColumnScreen(
                     Text(btnContent, color = Color.White, fontSize = 24.sp, textAlign = TextAlign.Center)
                 }
             }
+            // Popup to notify user
             SnackbarHost(
                 hostState = snackbarHostState,
                 snackbar = { snackbarData ->
@@ -139,6 +141,8 @@ fun HeaderText(text: String) {
     Text(text, fontWeight = FontWeight.Bold, fontSize = 18.sp, modifier = Modifier.padding(top = 16.dp) )
 }
 
+// Use this composable for api data which returns html string
+// This properly formats the data
 @Composable
 fun HTMLText(text: String, modifier: Modifier = Modifier) {
     val spannedText = HtmlCompat.fromHtml(text, 0)

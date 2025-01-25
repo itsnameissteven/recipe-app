@@ -39,7 +39,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import com.example.recipes.model.SearchResponse
 import com.example.recipes.model.ShallowRecipe
 
 @Composable
@@ -118,32 +117,6 @@ fun RecipesGridScreen(
         contentPadding = contentPadding
     ) {
         items(items = data, key = { recipe -> recipe.id }) { recipe ->
-            RecipeCard(
-                recipe,
-                modifier = Modifier
-                    .padding(4.dp)
-                    .fillMaxWidth()
-                    .fillMaxHeight(),
-                onCardClick = {   onCardClick(recipe) },
-            )
-        }
-    }
-}
-
-@Composable
-fun SearchRecipesGridScreen(
-    data: SearchResponse,
-    modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
-    onCardClick: (recipe: ShallowRecipe) -> Unit,
-) {
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(150.dp),
-        modifier = modifier.padding(horizontal = 4.dp, vertical = 4.dp),
-        contentPadding = contentPadding
-    ) {
-        items(items = data.results, key = { recipe -> recipe.id }) { recipe ->
-//            todo look into generics here
             RecipeCard(
                 recipe,
                 modifier = Modifier

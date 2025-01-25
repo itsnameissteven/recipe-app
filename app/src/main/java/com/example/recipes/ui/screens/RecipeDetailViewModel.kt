@@ -47,6 +47,7 @@ class RecipeDetailViewModel(private val recipeRepository: RecipeRepository, reci
     }
 
     companion object {
+        // Factory function so a recipe can be passed in
         fun provideFactory (recipe: ShallowRecipe): ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = (this[APPLICATION_KEY] as RecipeApplication)

@@ -3,11 +3,13 @@ package com.example.recipes.model
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+// Shallow data type to be extended upon and used as a type in composables.
 interface ShallowRecipe {
     val id: Int
     val title: String
     val image: String
 }
+// API data types
 @Serializable
 data class Recipe (
     override val id: Int,
