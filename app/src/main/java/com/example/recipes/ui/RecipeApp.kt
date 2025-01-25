@@ -1,6 +1,5 @@
 package com.example.recipes.ui
 
-import android.database.Cursor
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,7 +16,7 @@ import com.example.recipes.ui.screens.RecipeDetailViewModel
 import com.example.recipes.ui.screens.SearchScreen
 import com.example.recipes.ui.screens.SearchViewModel
 
-
+// Each function create a viewModel and pairs it with its screen
 @Composable
 fun RecipeApp(onCardClick: (ShallowRecipe) -> Unit, contentPadding: PaddingValues) {
     val recipesViewModel: RecipeViewModel  =
@@ -66,6 +65,7 @@ fun SearchDetails(onCardClick: (ShallowRecipe) -> Unit, contentPadding: PaddingV
 fun FavoritesDetail(favorites: List<Favorite>, contentPadding: PaddingValues, onCardClick: (ShallowRecipe) -> Unit) {
     val favoritesViewModel: FavoritesViewModel =
         viewModel(factory = FavoritesViewModel.providerFactory(favorites))
+    // Make sure the screen is refreshed when the favorites change
     LaunchedEffect(Unit) {
         favoritesViewModel.getAppFavorites(favorites)
     }

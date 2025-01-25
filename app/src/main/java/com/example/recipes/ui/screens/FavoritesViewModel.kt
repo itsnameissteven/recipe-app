@@ -34,10 +34,12 @@ class FavoritesViewModel(private val recipeRepository: RecipeRepository, favorit
     }
 
     fun getAppFavorites(favorites: List<Favorite>) {
+        // No need to set loading state if favorite list is empty
         if (favorites.isEmpty()) {
             state = FavoritesUiState.Success(emptyList())
             return
         }
+        // Format local favorites list to a query string
         val query = favorites.joinToString(",") { it.recipeId.toString()}
         viewModelScope.launch {
             state = FavoritesUiState.Loading

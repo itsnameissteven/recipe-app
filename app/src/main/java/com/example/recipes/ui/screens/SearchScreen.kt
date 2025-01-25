@@ -46,11 +46,13 @@ fun SearchScreen(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.Start,
     ) {
+        // Store the search bar top level so that it always displays
         SearchBar(onSearch)
         when(state) {
             is SearchUiState.Initial -> Text("Search for Recipes", modifier = Modifier.padding(top = 24.dp), fontSize = 24.sp, fontWeight = FontWeight.Bold)
             is SearchUiState.Success -> {
                 if(state.recipes.results.isEmpty()) {
+                    // let the user know that the api call has finished but nothing was returned
                     Text(
                         "No Recipes Found",
                         modifier = Modifier.padding(top = 24.dp),

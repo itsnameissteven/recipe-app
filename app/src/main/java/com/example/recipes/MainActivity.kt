@@ -55,6 +55,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                 ) {
+                    // Always display the recipe detail page if it is selected
                     if(selectedRecipe.value != null) {
                         AppScaffold(
                             selectedItem = selectedItem.value,
@@ -74,6 +75,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                     } else {
+                        // When no select recipe follow the navigation bar values
                         if(selectedItem.value == 0) {
                             AppScaffold(
                                 text = stringResource(R.string.app_name),

@@ -25,7 +25,7 @@ fun FavoritesScreen(
         is FavoritesUiState.Loading -> LoadingScreen(modifier = modifier)
         is FavoritesUiState.Success -> {
             if(state.recipes.isEmpty()) {
-
+//              Notify the user there are no recipes currently saved
                 Text(
                     "No Recipes Saved",
                     modifier = Modifier.padding(top = 140.dp),

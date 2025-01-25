@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.recipes.model.Favorite
 
+// Database Manager class which creates a table and returns helps to access or change
+// the data
 class DataManager(context: Context) {
     private val db: SQLiteDatabase
 
