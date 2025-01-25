@@ -2,6 +2,7 @@ package com.example.recipes.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+
 interface ShallowRecipe {
     val id: Int
     val title: String
@@ -41,4 +42,10 @@ data class BaseRecipe (
 @Serializable
 data class SearchResponse (
     val results: List<BaseRecipe>
+)
+
+@Serializable
+data class Favorite (
+    val id: Int,
+    val recipeId: Int,
 )

@@ -1,11 +1,9 @@
 package com.example.recipes.ui.screens
 
 import android.text.util.Linkify
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,9 +14,15 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,18 +34,20 @@ import com.example.recipes.model.Recipe
 import com.google.android.material.textview.MaterialTextView
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.font.FontWeight
+import kotlinx.coroutines.launch
 
 @Composable
 fun RecipeDetailScreen(
     recipeDetailUiState: RecipeDetailUiState,
     retryAction: () -> Unit,
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
-    onBackClick: () -> Unit
+    onClick: (Recipe) -> Unit,
+    isFavorite: Boolean
 ) {
+
     when(recipeDetailUiState) {
         is RecipeDetailUiState.Loading -> LoadingScreen(modifier = modifier)
-        is RecipeDetailUiState.Success -> RecipeColumnScreen(recipeDetailUiState.recipe, modifier = modifier.fillMaxWidth(), onBackClick = onBackClick, contentPadding)
+        is RecipeDetailUiState.Success -> RecipeColumnScreen(recipeDetailUiState.recipe, modifier = modifier.fillMaxWidth(), onClick = onClick, isFavorite = isFavorite)
         is RecipeDetailUiState.Error -> ErrorScreen(retryAction, modifier = modifier.fillMaxWidth())
     }
 }
@@ -50,9 +56,13 @@ fun RecipeDetailScreen(
 fun RecipeColumnScreen(
     data: Recipe,
     modifier: Modifier = Modifier,
-    onBackClick: () -> Unit,
-    contentPadding: PaddingValues = PaddingValues(0.dp)
+    onClick: (Recipe) -> Unit,
+    isFavorite: Boolean
 ) {
+    val btnContent = if(isFavorite) "-" else "+"
+    val snackbarContent = if(isFavorite) "Removed from favorites" else "Added to favorites"
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
     Surface(
         modifier = Modifier.fillMaxSize(),
     ) {
@@ -73,7 +83,16 @@ fun RecipeColumnScreen(
 
                 RecipeImage(data, modifier.fillMaxWidth())
                 Button(
-                    onClick = onBackClick,
+                    onClick = {
+                        onClick(data)
+                        scope.launch {
+                            snackbarHostState.showSnackbar(
+                                message = snackbarContent,
+                                actionLabel = "OK",
+                                duration = SnackbarDuration.Short,
+                            )
+                        }
+                              },
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
                         .padding(16.dp)
@@ -81,9 +100,18 @@ fun RecipeColumnScreen(
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
                     shape = CircleShape,
                 ) {
-                    Text("+", color = Color.White, fontSize = 24.sp, textAlign = TextAlign.Center)
+                    Text(btnContent, color = Color.White, fontSize = 24.sp, textAlign = TextAlign.Center)
                 }
             }
+            SnackbarHost(
+                hostState = snackbarHostState,
+                snackbar = { snackbarData ->
+                    Snackbar(
+                        snackbarData = snackbarData,
+                        actionOnNewLine = false
+                    )
+                }
+            )
             Column(modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),

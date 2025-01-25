@@ -1,6 +1,5 @@
 package com.example.recipes.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.recipes.R
-import com.example.recipes.model.Recipe
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
@@ -39,15 +37,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.remember
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.setValue
-import com.example.recipes.model.BaseRecipe
-import com.example.recipes.model.RecipesResponse
 import com.example.recipes.model.SearchResponse
 import com.example.recipes.model.ShallowRecipe
 
@@ -62,7 +53,6 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
 
 @Composable
 fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
-    Log.i("test", "error screen")
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
@@ -93,7 +83,7 @@ fun RecipeImage(recipe: ShallowRecipe, modifier: Modifier = Modifier) {
 
 
 @Composable
-fun BottomNavigationBar(selectedItem: MutableState<Int>) {
+fun BottomNavigationBar(selectedItem: Int, setSelectedItem: (Int) -> Unit) {
     val items = listOf("Browse", "Favorites", "Search")
     val selectedIcons = listOf(Icons.Filled.Home, Icons.Filled.Favorite, Icons.Filled.Search)
     val unselectedIcons =
@@ -103,13 +93,13 @@ fun BottomNavigationBar(selectedItem: MutableState<Int>) {
             NavigationBarItem(
                 icon = {
                     Icon(
-                        if (selectedItem.value == index) selectedIcons[index] else unselectedIcons[index],
+                        if (selectedItem == index) selectedIcons[index] else unselectedIcons[index],
                         contentDescription = item
                     )
                 },
                 label = { Text(item) },
-                selected = selectedItem.value == index,
-                onClick = { selectedItem.value = index }
+                selected = selectedItem == index,
+                onClick = { setSelectedItem(index) }
             )
         }
     }
@@ -122,14 +112,12 @@ fun RecipesGridScreen(
     contentPadding: PaddingValues = PaddingValues(0.dp),
     onCardClick: (ShallowRecipe) -> Unit,
 ) {
-    Log.i("recipeGrid screen", "grid screen")
     LazyVerticalGrid(
         columns = GridCells.Adaptive(150.dp),
         modifier = modifier.padding(horizontal = 4.dp, vertical = 4.dp),
         contentPadding = contentPadding
     ) {
         items(items = data, key = { recipe -> recipe.id }) { recipe ->
-            Log.i("recipeGrid recipe", recipe.title)
             RecipeCard(
                 recipe,
                 modifier = Modifier
