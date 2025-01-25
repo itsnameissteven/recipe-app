@@ -56,7 +56,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                 ) {
                     if(selectedRecipe.value != null) {
-                        Log.i("selectedRecipe", selectedRecipe.value!!.title)
                         AppScaffold(
                             selectedItem = selectedItem.value,
                             setSelectedItem = { item -> setSelectedItem(item) }

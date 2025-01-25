@@ -1,10 +1,8 @@
 package com.example.recipes.data
 
 import android.content.Context
-import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.util.Log
 import com.example.recipes.model.Favorite
 
 class DataManager(context: Context) {
@@ -26,14 +24,11 @@ class DataManager(context: Context) {
 
     fun insert(recipeId: Int) {
         val query = "INSERT INTO $TABLE_N ($TABLE_ROW_RECIPE_ID) VALUES ($recipeId);"
-        Log.i("insert", query)
-
         db.execSQL(query)
     }
 
     fun delete(id: Int){
         val query = "DELETE FROM $TABLE_N WHERE $TABLE_ROW_RECIPE_ID = '$id';"
-        Log.i("delete", query)
         db.execSQL(query)
     }
 
