@@ -66,7 +66,9 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.7.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
     implementation(libs.material)
+    implementation(libs.core.ktx)
 
+    testImplementation("org.robolectric:robolectric:4.10")
     testImplementation(libs.mockk)
     testImplementation("androidx.arch.core:core-testing:2.1.0")
     testImplementation("junit:junit:4.13.2")
