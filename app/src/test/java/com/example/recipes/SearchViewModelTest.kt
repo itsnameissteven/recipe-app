@@ -1,9 +1,9 @@
 package com.example.recipes
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.example.recipes.data.RecipeRepository
-import com.example.recipes.ui.screens.SearchUiState
-import com.example.recipes.ui.screens.SearchViewModel
+import com.mancr.recipes.data.RecipeRepository
+import com.mancr.recipes.ui.screens.SearchUiState
+import com.mancr.recipes.ui.screens.SearchViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers

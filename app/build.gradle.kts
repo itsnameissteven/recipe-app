@@ -1,3 +1,4 @@
+import java.io.FileInputStream
 import java.util.Properties
 
 
@@ -6,16 +7,29 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose") version "2.1.0"
     id("org.jetbrains.kotlin.plugin.serialization")
-//    id("org.jetbrains.kotlin.plugin.compose")
+}
+
+
+val keystorePropertiesFile = rootProject.file("local.properties")
+val keystoreProperties = Properties().apply {
+    load(FileInputStream(keystorePropertiesFile))
 }
 
 android {
-    namespace = "com.example.recipes"
+    namespace = "com.mancr.recipes"
     compileSdk = 35
 
+    signingConfigs {
+        create("release") {
+            storeFile = file(keystoreProperties["FILE"] as String)  // Path to your keystore file
+            storePassword = keystoreProperties["PASS"] as String
+            keyAlias = "release"
+            keyPassword = keystoreProperties["PASS"] as String
+        }
+    }
 
     defaultConfig {
-        applicationId = "com.example.recipes"
+        applicationId = "com.mancr.recipes"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
@@ -28,12 +42,14 @@ android {
     }
 
     buildTypes {
-        release {
+        getByName("release") {
+            isDebuggable = false
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     buildFeatures {

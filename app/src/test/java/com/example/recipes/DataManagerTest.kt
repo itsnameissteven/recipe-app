@@ -2,7 +2,7 @@ package com.example.recipes
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import com.example.recipes.data.DataManager
+import com.mancr.recipes.data.DataManager
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before

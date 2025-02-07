@@ -1,9 +1,9 @@
 package com.example.recipes
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.example.recipes.data.RecipeRepository
-import com.example.recipes.ui.screens.FavoritesUiState
-import com.example.recipes.ui.screens.FavoritesViewModel
+import com.mancr.recipes.data.RecipeRepository
+import com.mancr.recipes.ui.screens.FavoritesUiState
+import com.mancr.recipes.ui.screens.FavoritesViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +26,6 @@ class FavoritesViewModelTest {
     private val testDispatcher = StandardTestDispatcher()
     private lateinit var recipeRepository: RecipeRepository
     private lateinit var viewModel: FavoritesViewModel
-    private val testRecipe = mockShallowRecipe
     private val detailedRecipes = mockRecipeList
     private val mockQuery = mockFavoritesList.joinToString(",") { it.recipeId.toString()}
 

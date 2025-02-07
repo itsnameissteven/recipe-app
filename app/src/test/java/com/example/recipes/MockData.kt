@@ -1,14 +1,11 @@
 package com.example.recipes
 
-import com.example.recipes.model.BaseRecipe
-import com.example.recipes.model.Favorite
-import com.example.recipes.model.Ingredient
-import com.example.recipes.model.Recipe
-import com.example.recipes.model.ShallowRecipe
-import com.example.recipes.model.RecipesResponse
-import com.example.recipes.model.SearchResponse
-import io.mockk.every
-import io.mockk.mockk
+import com.mancr.recipes.model.BaseRecipe
+import com.mancr.recipes.model.Favorite
+import com.mancr.recipes.model.Ingredient
+import com.mancr.recipes.model.Recipe
+import com.mancr.recipes.model.RecipesResponse
+import com.mancr.recipes.model.SearchResponse
 import retrofit2.Response
 import okhttp3.ResponseBody
 
